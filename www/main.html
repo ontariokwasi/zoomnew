@@ -1,0 +1,942 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>RevenueCollector</title>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.4.min.css">
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<!-- <link rel="stylesheet" href="_assets/css/jqm-demos.css"> -->
+		<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+		<script src="js/jquery.js"></script>
+		<script src="js/script.js"></script>
+		<!-- <script src="_assets/js/index.js"></script> -->
+		<script src="js/jquery.mobile-1.4.4.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+
+        <!-- <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script> -->
+        <script>
+			// $(document).ready(function() {
+			// 	//toggle `popup` / `inline` mode
+			// 	$.fn.editable.defaults.mode = 'inline';
+
+			// 	//make username editable
+			// 	$('.addspan').editable({
+			// 		url : 'editclient.php?col=hsenumber',
+			// 		success : function(response) {
+			// 			if (!response.success) {
+			// 				if (response == 'true') {
+			// 					alert('Address saved!');
+			// 				} else {
+			// 					alert('Error');
+			// 				}
+			// 			} else {
+			// 				alert('Error');
+			// 			}
+			// 		}
+			// 	});
+			// 	$('.mobspan').editable({
+			// 		url : 'editclient.php?col=mobile',
+			// 		success : function(response) {
+			// 			if (!response.success) {
+			// 				if (response == 'true') {
+			// 					alert('Mobile number saved!');
+			// 				} else {
+			// 					alert('Error');
+			// 				}
+			// 			} else {
+			// 				alert('Error');
+			// 			}
+			// 		}
+			// 	});
+			// 	//modify buttons style
+			// 	/*$.fn.editableform.buttons =
+			// 	'<button type="button" style="border-left: 1px solid skyblue; background: #3388cc; color:white; text-shadow: none;"><i class="fa fa-check" style="color:white"></i> OK</button>' +
+			// 	'<button type="button" style="border-left: 1px solid skyblue; background: #838383; color:white; text-shadow: none;"><i class="fa fa-close" style="color:white"></i> Cancel</button>';*/
+
+			// 	//                <button style="border-left: 1px solid background: #3388cc; color:white; text-shadow: none;"><i class="fa fa-user fa-3x"></i></button>
+
+			// });
+        </script>
+	</head>
+	<body>
+
+		<div data-role="page" id="pgWelcome">
+
+			<div data-role="header" data-position='fixed' data-theme='a' >
+				<!-- <a href="login.php" rel="external" data-transition='flow' class="ui-btn ui-icon-back ui-btn-icon-notext ui-corner-all">No text</a> -->
+				<h1>C-PANEL</h1>
+			</div><!-- /header -->
+
+			<div data-role="content" class="ui-content">
+				<div>
+					<table border="0" cellspacing="30" cellpadding="5" width="100%" height="200px">
+						<tr align="center">
+							<td><a href="#newClient" data-transition='flip' style="font-weight: lighter;color: black; text-decoration: none;" ><i class="fa fa-user fa-3x"></i>
+							<br/>
+							new </a></td>
+							<td><a href="#newPayment" data-transition='slidedown' style="font-weight: lighter;color: black; text-decoration: none;"><i class="fa fa-money fa-3x"></i>
+							<br/>
+							payment</a></td>
+						</tr>
+						<tr align="center">
+							<td><a href="#searchClient" data-transition='turn' style="font-weight: lighter;color: black; text-decoration: none;"><i class="fa fa-search fa-3x"></i>
+							<br/>
+							search</a></td>
+							<td><a href="#storedPayments" id="storedPayments" data-transition='turn' style="font-weight: lighter;color: black; text-decoration: none;"><i class="fa fa-list-alt fa-3x" id="spi" style="color: #cc66ff"></i>
+							<br/>
+							stored payments [<span id="sp_no">0</span>]</a></td>
+						</tr>
+						<tr align="center">
+							
+							<td><a href="login.html" rel="external" data-transition='flow' style="font-weight: lighter;color: black; text-decoration: none;"><i class="fa fa-sign-out fa-3x" style="color: pink"></i>
+							<br/>
+							signout</a></td>
+							<!-- <td><a href="#searchClient" data-transition='turn' style="font-weight: lighter;color: black; text-decoration: none;"><i class="fa fa-list-alt fa-3x" style="color: #cc66ff"></i>
+							<br/>
+							stored clients [3]</a></td> -->
+						</tr>
+						<!-- <tr align="center">
+							<td><i class="fa fa-line-chart fa-4x"></i>
+							<br/>
+							Report</td>
+							<td><i class="fa fa-wrench fa-4x"></i>
+							<br/>
+							Setting</td>
+						</tr> -->
+					</table>
+
+				</div>
+			</div><!-- /content -->
+
+			<div data-role="footer" data-position="fixed" data-theme=''>
+				<h1>ZoomLion</h1>
+			</div>
+			<!-- /footer -->
+		</div><!-- /page -->
+
+		<!-- Start of NEW CLIENT page I -->
+		<div data-role="page" id="newClient">
+			<!-- Header -->
+			<div data-role="header" data-position='fixed' data-add-back-btn="true">
+				<h1>NEW CIENT</h1>
+
+			</div>
+			<!-- /header -->
+			<!-- Content    -->
+			<div data-role="content">
+				<div>
+					<div id="display" class="display" style="padding: 10px;background:skyblue;color:white;text-align: center;text-shadow: none;
+					font-weight:bolder;width:83%;position: fixed;bottom: 30%; left:0px;margin: 5%;z-index: 80px;display:none;border:1px solid gray;"></div>
+					
+					<label for="username" style="text-align: center">Client Name</label>
+					<input type="text" name="clientName" value="" id="clientName" data-mini='true'  placeholder="Abraham Odoi Nii Laryea"/>
+					
+					<label for="password" style="text-align: center">Gender</label>
+					<select name="clientGender" id="clientGender" data-mini='true' >
+						<option value="Male">Male</option>
+						<option value="Female">Female</option>
+					</select>
+
+					<label for="mobile" style="text-align: center">Mobile</label>
+					<input type="text" name="mobile" value="" id="clientMobile" data-mini='true'  placeholder="233200000000"/>
+
+					<label for="hseNumber" style="text-align: center">House Number</label>
+					<input type="text" name="hseNumber" value="" id="clienthseNumber" data-mini='true'  placeholder="G234/6"/>
+
+					<label for="serviceType" style="text-align: center">Service Type</label>
+					<select name="clientServiceType" id="clientServiceType" data-mini='true' >
+						<option value="HH">HH</option>
+						<option value="Co">Co</option>
+					</select>
+
+					<label for="bins" style="text-align: center">Bins</label>
+					<input type="number" name="bins" value="" id="clientBins" data-mini='true'  placeholder=""/>
+					
+					<label for="amount" style="text-align: center">Amount</label>
+					<input type="number" name="amount" value="" id="clientAmount" data-mini='true'  placeholder=""/>
+					
+					<label for="mobile" style="text-align: center">Location</label>
+					<input type="text" name="location" value="" id="clientLocation" data-mini='true'  placeholder="C11" maxlength="3"/>
+
+					<label for="cluster" style="text-align: center">Cluster</label>
+					<input type="number" name="cluster" value="" id="clientCluster" data-mini='true'  placeholder="01" maxlength="2"/>
+					<input type="hidden" name="agentN" id="agentN" />
+
+					<!-- <label for="clientID" style="text-align: center">Client ID</label>
+					<input type="text" name="clientID" style="text-align: center; color: red"  value="<?php echo 'ZL' . rand(100, 100000); ?>" id="clientID" disabled='disabled' /> -->
+
+					<button name="btnnewClient"  data-mini='true' onclick="newClient()" style="border-left: 1px solid skyblue; background: #3388cc; color:white; text-shadow: none;">
+						PROCEED
+					</button>
+					<!-- </form> -->
+				</div>
+			</div>
+			<!-- /content -->
+			<!-- footer -->
+			<div data-role="footer" data-position='fixed'>
+				<h4>&copy; 2016 NALO</h4>
+			</div>
+			<!-- /footer -->
+		</div>
+		<!-- /page -->
+
+		<!-- Start of PAYMENT page I -->
+		<div data-role="page" id="newPayment">
+			<!-- Header -->
+			<!-- <div data-role="header" data-position='fixed' data-add-back-btn="true"> -->
+			<div data-role="header" data-position='fixed' data-add-back-btn="true">
+				<h1>PAYMENT</h1>
+			</div>
+			<!-- /header -->
+			<!-- Content    -->
+			<div data-role="content">
+				<div>
+					<div id="paydisplay" class="display" style="padding: 10px;background:skyblue;color:white;text-align: center;text-shadow: none;
+					font-weight:bolder;width:83%;position: absolute;top: 45%; left:0px;margin: 5%;z-index: 80px;display:none;border:1px solid gray;"></div>
+					<!-- <form action="" method="post"> -->
+					<label for="paymentClient" style="text-align: center">Client ID</label>
+					<input type="text" name="paymentClient" onkeyup="fetchuser()" value="" id="paymentClient"  placeholder="eg. ZL1234578"/>
+ 
+					<label for="mobile" style="text-align: center">Client Name</label>
+					<input type="text" name="paymentClientN" value="" disabled='disabled'  id="paymentClientN" data-mini='true'  />
+
+					<label for="paymentType" style="text-align: center">Type</label>
+					<select name="paymentType" id="paymentType" data-mini='true' >
+						<option value="Cash">Cash</option>
+						<option value="Cheque">Cheque</option>
+						<option value="MobileMoney">MobileMoney</option>
+					</select>
+
+					<input type="text" name="chequeNumber" value="" class="extrafield" placeholder="Cheque Number" id="chequeNumber" data-mini='true'  style="display: none;" />
+
+					<input type="text" name="MobilemoneyNumber" class="extrafield" value="" placeholder="Mobilemoney Number" id="MobilemoneyNumber" data-mini='true'  style="display: none;" />
+
+					<label for="service" style="text-align: center">Service</label>
+					<select name="service" id="service" data-mini='true' >
+						<option value="Cash">Door-to-door</option>
+					</select>
+
+					<label for="service" style="text-align: center">Month</label>
+					<select name="paymonth" id="paymonth" data-mini='true' >
+						<option>January</option>
+						<option>February</option>
+						<option>March</option>
+						<option>April</option>
+						<option>May</option>
+						<option>June</option>
+						<option>July</option>
+						<option>August</option>
+						<option>September</option>
+						<option>October</option>
+						<option>November</option>
+						<option>December</option>
+					</select>
+
+					<label for="service" style="text-align: center">Year</label>
+					<select name="payyear" id="payyear" data-mini='true' >
+						<option>2015</option>
+						<option selected="selected">2016</option>
+						<option>2017</option>
+						<option>2018</option>
+						<option>2019</option>
+						<option>2020</option>
+						<option>2021</option>
+						<option>2022</option>
+						<option>2023</option>
+						<option>2024</option>
+						<option>2025</option>
+						<option>2026</option>
+					</select>
+
+					<label for="paymentAmount" style="text-align: center">Amount GHs</label>
+					<input type="text" name="paymentAmount" value="" id="paymentAmount" data-mini='true'  placeholder="eg. 200"/>
+
+					
+
+					<label for="receivedBy" style="text-align: center">Received by</label>
+					<input type="text" name="receivedBy" value="" disabled='disabled' id="receivedBy" data-mini='true'  />
+
+					<button name="btnnewPayment" id="btnnewPayment"  data-mini='true' onclick="newPayment()" style="border-left: 1px solid skyblue; background: #3388cc; color:white; text-shadow: none;">
+						PAY
+					</button>
+					<!-- </form> -->
+				</div>
+			</div>
+			<!-- /content -->
+			<!-- footer -->
+			<div data-role="footer" data-position='fixed'>
+				<h4>&copy; 2016 NALO</h4>
+			</div>
+			<!-- /footer -->
+		</div>
+		<!-- /page -->
+
+		<!-- Start of SEARCH page I -->
+		<div data-role="page" id="searchClient">
+			<!-- Header -->
+			<div data-role="header" data-position='fixed' data-add-back-btn="true">
+				<h1>CLIENTS</h1>
+			</div>
+			<!-- /header -->
+			<!-- Content    -->
+			<div data-role="content">
+				<div>
+					<div id="searchdisplay" class="display" style="padding: 10px;background:skyblue;color:white;text-align: center;text-shadow: none;
+					font-weight:bolder;width:83%;position: absolute;top: 45%; left:0px;margin: 5%;z-index: 80px;display:none;border:1px solid gray;"></div>
+
+				</div>
+
+				<div id="set" data-role="collapsible-set" data-content-theme="b">
+
+					<div id="set1">
+						<!-- <h3>ALL CLIENTS</h3> -->
+						<p>
+							<ul data-role='listview' data-inset='true' data-filter='true' id='wrpPending' style='color:blue; cursor:pointer; width: 100%; height: 100%;' class='fetchedAllDetails'>
+								
+							
+							</ul>
+						</p>
+					</div>
+				</div>
+
+			</div>
+			<!-- /content -->
+			<!-- footer -->
+			<div data-role="footer" data-position='fixed'>
+				<h4>&copy; 2016 NALO</h4>
+			</div>
+			<!-- /footer -->
+		</div>
+		<!-- /page -->
+
+	</body>
+	<script>
+	// $(document).ready(function() {
+	// 	checkStoredPayments();
+	// });
+	function checkStoredPayments(){
+		var no_of_payments = 0;
+		var storedpay = localStorage.getItem("payment");
+		var storedpayArr = storedpay.split("***");
+		no_of_payments = storedpayArr.length;
+		// no_of_payments = (storedpay.match(/[***]/g) || []).length;
+		// alert(storedpayArr[0]);
+		// console.log(storedpayArr[0]);
+
+		// no_of_payments = parseInt(no_of_payments)
+		// console.log(storedpay[0][0]);
+		if(no_of_payments==1&& storedpay[0]==undefined){
+			// alert(storedpay[0])
+			$('#sp_no').html(0);
+			return 0;
+		}
+		else{
+			$('#sp_no').html(no_of_payments);
+			return no_of_payments;
+		}
+		
+		
+	}
+	
+	window.setInterval(function(){
+	  checkStoredPayments();
+	}, 5000);
+	function makePayment(paymentClient, paymentClientN, paymentAmount,agent){
+		 // $.post("http://wseed.nalosolutions.com/mobileapi/newPayment.php", {
+			// 				paymentClient : paymentClient,
+			// 				paymentClientN : paymentClientN,
+			// 				// paymentType : paymentType,
+			// 				paymentAmount : paymentAmount,
+			// 				agent : agent
+			// 			}, function(data) {
+				var retur = 0;
+		$.ajax({
+		        url : 'http://api.nalosolutions.com/zoom/mobileapi/newPayment.php',
+		        type : 'POST',
+		        data: { 
+		            		paymentClient : paymentClient,
+							paymentClientN : paymentClientN,
+							// paymentType : paymentType,
+							paymentAmount : paymentAmount,
+							agent : agent
+		        },
+		        async: false,
+		        success : function(data,status,xhr) {
+		        	// alert(data)
+							if (data == 1) {
+								$("#btnnewPayment").removeAttr('disabled', 'disabled');
+								$("#paydisplay").html('Payment Recorded Successfully');
+
+								$('#paymentClient').val('');
+								$('#paymentClientN').val('');
+								$('#paymentAmount').val('');
+
+								$("#paydisplay").fadeOut(10000);
+								
+							} else {
+								// var oldpay = localStorage.getItem("payment");
+
+								// // alert(oldpay);
+								// /*document.write(oldpay)
+								// document.write("<br/>")*/
+
+								// if(oldpay){
+								// 	localStorage.setItem("payment", oldpay+'***'+store);
+								// }
+								// else{
+								// 	localStorage.setItem("payment", store);
+								// }
+								var newpay = localStorage.getItem("payment");
+
+								$("#paydisplay").html('Payment failed. Please try again later.');
+								$("#paydisplay").css('color', 'red');
+								$("#paydisplay").fadeIn();
+								$("#paydisplay").fadeOut(10000);
+								$("#btnnewPayment").removeAttr('disabled', 'disabled');
+							}
+							retur = data;
+							// exit;
+						}
+
+					});
+		return retur;
+}
+$("#storedPayments").click(function() {
+			if(checkStoredPayments()>0){
+				$('#spi').removeClass('fa-list-alt');
+			$('#spi').html('<span style="font-size: 16px;">uploading...</span>');
+			$.ajax({
+		        url : 'http://api.nalosolutions.com/zoom/mobileapi/checkonline.php',
+		        type : 'POST',
+		        data: { 
+		            test : 'test'
+		        },
+		        success : function(response,status,xhr) { //run this if check is successful
+		            if (xhr['status']=='200') {	
+
+		            	var storedpay = localStorage.getItem("payment");
+						var storedpayArr = storedpay.split("***");
+						// var no_of_payments = storedpayArr.length;
+						var success = 0;
+						var error = 0;
+						var rez
+
+						$.each( storedpayArr, function( index, value ){
+						    var breakpayArr = value.split("|");
+						    var paymentClient = breakpayArr[0];
+						    var paymentClientN = breakpayArr[1];
+						    var paymentAmount = breakpayArr[2];
+						    var agent = breakpayArr[3];
+
+						    rez = makePayment(paymentClient,paymentClientN,paymentAmount,agent);
+						    // alert(parseInt(rez))
+						    if(rez==1){
+						    	success++;
+						    }
+						    else{
+						    	error++;
+						    }
+						});
+
+						alert("Successful transactions: "+success+". Failed transactions: "+error);
+						localStorage.setItem("payment", "");
+						
+						checkStoredPayments();
+						// $('#spi').removeClass('fa-spinner fa-spin');
+						$('#spi').html('');
+						$('#spi').addClass('fa-list-alt');
+					}
+					else {
+					// alert(data);
+					$("#display").html('Device offline. Please check connection.');
+					$("#display").css('color', 'red');
+					$("#display").fadeIn();
+					$("#display").fadeOut(8000);
+					// $('#spi').removeClass('fa-spinner fa-spin');
+					$('#spi').html('');
+						$('#spi').addClass('fa-list-alt');
+
+					
+					};
+		        },
+		        error : function(){
+		        	alert('Device offline. Please check connection.');
+		        	// $('#spi').removeClass('fa-spinner fa-spin');
+		        	$('#spi').html('');
+						$('#spi').addClass('fa-list-alt');
+		        	
+		   //      	var oldpay = localStorage.getItem("payment");
+
+					// // alert(oldpay);
+					// /*document.write(oldpay)
+					// document.write("<br/>")*/
+
+					// if(oldpay){
+					// 	localStorage.setItem("payment", oldpay+'***'+store);
+					// }
+					// else{
+					// 	localStorage.setItem("payment", store);
+					// }
+					// var newpay = localStorage.getItem("payment");
+
+					// $("#paydisplay").html('Device offline. Please check connection.');
+					// $("#paydisplay").css('color', 'red');
+					// $("#paydisplay").fadeIn();
+					// $("#paydisplay").fadeOut(6000);
+		            
+		        }
+
+
+		    });
+
+			}
+			else{
+				alert('There are no stored payments.');
+			}
+			
+		});
+
+		//Login Attempt
+		function newClient() {
+			$("#display").html('Processing...');
+			$("#display").show();
+			var name = $('#clientName').val();
+			var gender = $('#clientGender').val();
+			var mobile = $('#clientMobile').val();
+			var hseNumber = $('#clienthseNumber').val();
+			var service = $('#clientServiceType').val();
+			var bins = $('#clientBins').val();
+			var amount = $('#clientAmount').val();
+			var location = $('#clientLocation').val();
+			var cluster = $('#clientCluster').val();
+			// var id = $('#clientID').val();
+			var creds = localStorage.getItem("creds");
+			var credsArr = creds.split("|");
+			var collector_id = credsArr[2];
+			var ho_id = credsArr[3];
+
+			if (name == '' || gender == '' || mobile == '' || hseNumber == '' || service == '' || bins == '' || amount == '' || location == '' || cluster == '') {
+				$("#display").html('All fields required');
+				$("#display").css('color', 'red');
+				$("#display").fadeOut(8000);
+			} else {
+				$.post("http://api.nalosolutions.com/zoom/mobileapi/newClient.php", {
+					clientName : name,
+					clientGender : gender,
+					clientMobile : mobile,
+					clientHseNumber : hseNumber,
+					clientService : service,
+					clientBins : bins,
+					clientAmount : amount,
+					clientLocation : location,
+					clientCluster : cluster,
+					collector_id : collector_id,
+					ho_id : ho_id
+				}, function(data) {
+
+					if (data == 'true') {
+					$("#display").html('Client Added Successfully');
+
+					$('#clientName').val('');
+					$('#clientGender').val('');
+					$('#clientMobile').val('');
+					$('#clientLocation').val('');
+					$('#clienthseNumber').val('');
+					$('#clientBins').val('');
+					$('#clientAmount').val('');
+					$('#clientCluster').val('');
+
+					$("#display").fadeIn();
+					$("#display").fadeOut(4000, function() {
+						window.location = 'main.html';
+					});
+
+					//
+					// $.get("allClient.php", function(data) {
+					// $('.fetchedAllDetails').html(data);
+					//
+					// });
+					// } else {
+					// $("#display").html('Operation Unsuccessful. Try again' + data);
+					// $("#display").css('color', 'red');
+					// $("#display").fadeIn();
+					// $("#display").fadeOut(9000);
+					//
+					// };
+				}
+			});
+		}
+	}
+
+	</script>
+	<script>
+		function fetchuser() {
+			var clientid = $('#paymentClient').val();
+			$.post("http://api.nalosolutions.com/zoom/mobileapi/fetchclient.php", {
+				clientid : clientid,
+			}, function(data) {
+				$('#paymentClientN').val(data);
+			});
+		}
+
+	</script>
+	<script>
+	function newPayment() {
+			$("#btnnewPayment").attr('disabled', 'disabled');
+			$("#paydisplay").html('Processing...');
+			$("#paydisplay").show();
+			var paymentClient = $('#paymentClient').val();
+			var paymentClientN = $('#paymentClientN').val();
+			var paymentType = $('#paymentType').val();
+			var paymentAmount = $('#paymentAmount').val();
+			var service = $('#service').val();
+			var paymonth = $('#paymonth').val();
+			var payyear = $('#payyear').val();
+
+			//fetch user details
+			var creds = localStorage.getItem("creds");
+			creds = creds.split("|");
+			var agent = creds[0];
+
+			//set received by
+			$('#receivedBy').val(agent);
+
+			//current time
+			var dt = new Date();
+			var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+
+			//current date
+			var d = new Date();
+			var month = d.getMonth()+1;
+			var day = d.getDate();
+
+			var dte = d.getFullYear() + '-' +
+			    ((''+month).length<2 ? '0' : '') + month + '-' +
+			    ((''+day).length<2 ? '0' : '') + day;
+
+		    var datetime = dte+' '+time;
+
+			//put payment in string for storage if offline
+			var store = paymentClient+'|'+paymentClientN+'|'+paymentAmount+'|'+agent+'|'+datetime+'|'+paymentType+'|'+service+'|'+paymonth+'|'+payyear;
+			// var paystring = store+'***'; 
+
+			//check of fields are not empty
+			if (paymentClient == ''|| paymentAmount == '') {
+				$("#paydisplay").html('All fields required');
+				$("#paydisplay").css('color', 'red');
+				$("#paydisplay").fadeOut(8000);
+			} else {
+
+				$.ajax({
+		        url : 'http://api.nalosolutions.com/zoom/mobileapi/checkonline.php',
+		        type : 'POST',
+		        data: { 
+		            test : 'test'
+		        },
+		        success : function(response,status,xhr) { //run this if check is successful
+		            if (xhr['status']=='200') {	
+		            	$.post("http://api.nalosolutions.com/zoom/mobileapi/newPayment.php", {
+							paymentClient : paymentClient,
+							paymentClientN : paymentClientN,
+							paymentType : paymentType,
+							paymentAmount : paymentAmount,
+							service : service,
+							paymonth : paymonth,
+							payyear : payyear,
+							agent : agent,
+						}, function(data) {
+							if (data == '1') {
+								$("#btnnewPayment").removeAttr('disabled', 'disabled');
+								$("#paydisplay").html('Payment Recorded Successfully');
+
+								$('#paymentClient').val('');
+								$('#paymentClientN').val('');
+								$('#paymentAmount').val('');
+
+								$("#paydisplay").fadeOut(1000);
+							} else {
+								var oldpay = localStorage.getItem("payment");
+
+								// alert(oldpay);
+								/*document.write(oldpay)
+								document.write("<br/>")*/
+
+								if(oldpay){
+									localStorage.setItem("payment", oldpay+'***'+store);
+								}
+								else{
+									localStorage.setItem("payment", '***'+store);
+								}
+								var newpay = localStorage.getItem("payment");
+								checkStoredPayments();
+								$("#paydisplay").html('Offline Mode. Payment has been stored on device.');
+								$("#paydisplay").css('color', 'red');
+								$("#paydisplay").fadeIn();
+								$("#paydisplay").fadeOut(10000);
+								$("#btnnewPayment").removeAttr('disabled', 'disabled');
+								
+
+							};
+						});
+
+						
+					}
+					else {
+					// alert(data);
+					$("#display").html('Invalid credentials');
+					$("#display").css('color', 'red');
+					$("#display").fadeIn();
+					$("#display").fadeOut(8000);
+					
+					};
+		        },
+		        error : function(){
+		        	
+		        	var oldpay = localStorage.getItem("payment");
+
+					// alert(oldpay);
+					/*document.write(oldpay)
+					document.write("<br/>")*/
+
+					if(oldpay){
+						localStorage.setItem("payment", oldpay+'***'+store);
+					}
+					else{
+						localStorage.setItem("payment", store);
+					}
+					var newpay = localStorage.getItem("payment");
+
+					$("#paydisplay").html('Offline Mode. Payment has been stored on device.');
+					$("#paydisplay").css('color', 'red');
+					$("#paydisplay").fadeIn();
+					$("#paydisplay").fadeOut(10000);
+					$("#btnnewPayment").removeAttr('disabled', 'disabled');
+		            
+		        }
+
+
+		    });
+
+				// $.post("newPayment.php", {
+				// 	paymentClient : paymentClient,
+				// 	paymentClientN : paymentClientN,
+				// 	// paymentType : paymentType,
+				// 	paymentAmount : paymentAmount
+				// }, function(data) {
+				// 	if (data == '1') {
+				// 		$("#btnnewPayment").removeAttr('disabled', 'disabled');
+				// 		$("#paydisplay").html('Payment Recorded Successfully');
+
+				// 		$('#paymentClient').val('');
+				// 		$('#paymentClientN').val('');
+				// 		$('#paymentAmount').val('');
+
+				// 		$("#paydisplay").fadeOut(1000);
+
+				// 	} else {
+				// 		alert(data);
+				// 		$("#paydisplay").html('Operation Unsuccessful. Try again' + data);
+				// 		$("#paydisplay").css('color', 'red');
+				// 		$("#paydisplay").fadeIn();
+				// 		$("#paydisplay").fadeOut(1000);
+				// 		$("#btnnewPayment").removeAttr('disabled', 'disabled');
+
+				// 	};
+				// });
+			}
+		}
+		// function newPayment() {
+		// 	$("#paydisplay").html('Processing...');
+		// 	$("#paydisplay").show();
+		// 	var paymentClient = $('#paymentClient').val();
+		// 	var paymentClientN = $('#paymentClientN').val();
+		// 	var paymentType = $('#paymentType').val();
+		// 	var paymentAmount = $('#paymentAmount').val();
+
+		// 	if (paymentClient == '' || paymentType == '' || paymentAmount == '') {
+		// 		$("#paydisplay").html('All fields required');
+		// 		$("#paydisplay").css('color', 'red');
+		// 		$("#paydisplay").fadeOut(8000);
+		// 	} else {
+
+		// 		$.post("newPayment.php", {
+		// 			paymentClient : paymentClient,
+		// 			paymentClientN : paymentClientN,
+		// 			paymentType : paymentType,
+		// 			paymentAmount : paymentAmount
+		// 		}, function(data) {
+		// 			$("#paydisplay").html(data);
+
+		// 			// $('#paymentClient').val('');
+		// 			// $('#paymentClientN').val('');
+		// 			$('#paymentAmount').val('');
+
+		// 			$("#paydisplay").fadeOut(9000);
+
+		// 			// if (data == '1') {
+		// 			// $("#paydisplay").html('Payment Recorded Successfully');
+		// 			//
+		// 			// $('#paymentClient').val('');
+		// 			// $('#paymentClientN').val('');
+		// 			// $('#paymentAmount').val('');
+		// 			//
+		// 			// $("#paydisplay").fadeOut(9000);
+		// 			//
+		// 			// } else {
+		// 			// alert(data);
+		// 			// $("#paydisplay").html('Operation Unsuccessful. Try again' + data);
+		// 			// $("#paydisplay").css('color', 'red');
+		// 			// $("#paydisplay").fadeIn();
+		// 			// $("#paydisplay").fadeOut(9000);
+		// 			//
+		// 			// };
+		// 		});
+		// 	}
+		// }
+
+	</script>
+	<script>
+		$(".clientDetail").click(function() {
+			var clientid = $(this).attr('value');
+			$("#" + clientid).show();
+			// alert(clientid);
+		})
+	</script>
+	<script>
+		$(".closefulldetail").click(function() {
+			// alert('yes');
+			$(".fullClientDetail").hide();
+
+		});
+	</script>
+		<script>
+			$("#paymentType").change(function() {
+				$(".extrafield").hide();
+
+				if ($("#paymentType").val() == 'Cheque') {
+					$("#chequeNumber").show();
+				} else if ($("#paymentType").val() == 'MobileMoney') {
+					$("#MobilemoneyNumber").show();
+				}
+				;
+			});
+		</script>
+		
+		<script>
+			// $(".clientMakePayment").click(function() {
+			// 	// paID = $(this).val();
+			// 	alert('paID')
+			// 	// $("#paymentClient").val(paID);
+			// 	// $.post("fetchclient.php", {
+			// 	// 	clientid : paID,
+			// 	// }, function(data) {
+			// 	// 	$('#paymentClientN').val(data);
+			// 	// });
+			// });
+		</script>
+
+    <script>
+		function editval(mob, add) {
+			alert(mob);
+			alert(add);
+		}
+    </script>
+
+    <script>
+		$(".editClientDetails").click(function() {
+			var mobvals = $('#mobspan').html();
+			var addvals = $('#addspan').html();
+
+			/*alert(mobvals);
+			alert(addvals);*/
+			/* $("#mobspan").html("<input id='mobinp' style='margin-left:5px;' value='"+mobvals+"'>");
+			$("#addspan").html("<input id='addinp' value='"+mobvals+"'>");*/
+
+			//            $(this).html('Save');
+
+			/*paID = $(this).val();
+			 $("#paymentClient").val(paID);
+			 $.post("fetchclient.php", {
+			 clientid : paID,
+			 }, function(data) {
+			 $('#paymentClientN').val(data);
+			 });*/
+		});
+
+		$( document ).ready(function() {
+			var creds = localStorage.getItem("creds");
+			creds = creds.split("|");
+			var agent = creds[0];
+
+			//set received by
+			$('#receivedBy').val(agent);
+			$('#agentN').val(agent);
+
+			//###fetch clients
+			var clnts_json = localStorage.getItem("clnts");
+			clnts_json = JSON.parse(clnts_json);
+			var clnts_arr  = $.map(clnts_json, function(el) { return el; })
+			var output = "";
+			// console.log(clnts_arr)
+			var arrayLength = clnts_arr.length;
+			for (var i = 0; i < arrayLength; i++) {
+			    var fetchClient = clnts_arr[i];
+
+			   output += '<li value="'+ fetchClient['client_id']+'" class="clientDetail clientMakePayment" data-collector_id="'+ fetchClient['collector_id']+'" data-name="'+ fetchClient['name']+'" data-value="'+ fetchClient['client_id']+'">';
+			    output +='<a href="#newPayment" style="text-decoration: none;" value="'+ fetchClient['client_id']+'" > <font color="gray" size="3px">Name:</font>'+ fetchClient['name'];
+			        output +='<br/>';
+			        output +='<font color="gray" size="3px">ClientID: </font>'+ fetchClient['client_id'];
+			        output +='<br/>';
+			        output +='<font color="gray" size="3px">Mobile Num: </font>'+ fetchClient['mobile']+'</a>';
+			    output +='</li>';
+			    
+			}
+			// console.log(output);
+			$('#wrpPending').html(output);
+
+
+			//####fetch services
+			var services_json = localStorage.getItem("services");
+			services_json = JSON.parse(services_json);
+			var services_arr  = $.map(services_json, function(el) { return el; })
+			var output = "";
+			$('#service').html('');
+			// console.log(clnts_arr)
+			var arrayLength = services_arr.length;
+			for (var j = 0; j < arrayLength; j++) {
+				$('#service').append($("<option></option>").text(services_arr[j])); 
+			}
+
+			$(".clientMakePayment").click(function() {
+				// paID = $(this).value();
+				paID = $(this).data('value');
+				pcname = $(this).data('name');
+				pcollector_id = $(this).data('collector_id');
+				$("#paymentClient").val(paID);
+				$("#paymentClientN").val(pcname);
+				$("#pcollector_id").val(pcollector_id);
+				$.post("http://api.nalosolutions.com/zoom/mobileapi/fetchclient.php", {
+					clientid : paID,
+					collector_id : pcollector_id
+				}, function(data) {
+					$('#paymentClientN').val(data);
+				});
+			});
+
+			checkStoredPayments();
+
+			
+
+    		
+		});
+    </script>
+
+	
+</html>
