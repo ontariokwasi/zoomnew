@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+	<title>&nbsp;</title>
+	<head>
+		<title>Revenue Collector</title>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.4.min.css">
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="_assets/css/jqm-demos.css">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<!-- <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700"> -->
+		<script src="js/jquery.js"></script>
+		<script src="js/script.js"></script>
+		<script src="_assets/js/index.js"></script>
+		<script src="js/jquery.mobile-1.4.4.min.js"></script>
+	</head>
+	<body>
+		<!-- Start of first page I -->
+		<div data-role="page" id="page1">
+			<!-- Header -->
+			<div data-role="header" data-position='fixed'>
+				<h1>LOGIN</h1>
+			</div>
+			<!-- /header -->
+			<!-- Content    -->
+			<div data-role="content">
+				<div>
+					<div id="display" class="display" style="padding: 10px;background:skyblue;color:white;text-align: center;text-shadow: none;
+					font-weight:bolder;width:83%;position: absolute;top: 45%; left:0px;margin: 10%;z-index: 80px;display:none;border:1px solid gray;"></div>
+					<!-- <form action="" method="post"> -->
+					<label for="username" style="text-align: center">Username</label>
+					<input type="text" name="username" value="" id="txtusername" data-mini='true'/>
+					<label for="password" style="text-align: center">Password</label>
+					<input type="password" name="password" value="" id="txtpassword" data-mini='true'/>
+					<button type="submit" name="btnlogin"  data-mini='true' onclick="Login()" style="border-left: 1px solid skyblue; background: #3388cc; text-shadow: none;">
+						LOGIN
+					</button>
+					<!-- </form> -->
+				</div>
+			</div>
+			<!-- /content -->
+			<!-- footer --> 
+			<div data-role="footer" data-position='fixed'>
+				<h4>&copy; powered by NALO</h4>
+			</div>
+			<!-- /footer -->
+		</div>
+		<!-- /page -->
+	</body>
+</html>
+<script>
+	document.addEventListener("deviceready", onDeviceReady, false);
+
+	function onDeviceReady() {
+		document.addEventListener("pause", onPause, false);
+		document.addEventListener("resume", onResume, false);
+		document.addEventListener("offline", onOffline, false);
+		// alert("Device is Ready");
+	}
+
+	//What to do when paused
+	function onPause() {
+
+		alert("paused!");
+	}
+
+	//What to do when resumed
+	function onResume() {
+
+		alert("resume");
+	}
+
+	//What to do when offline
+	function onOffline() {
+
+		alert("Your device is currently offline");
+	}
+
+
+	//Login Attempt
+	function Login() {
+		$("#display").html('Processing...');
+		$("#display").show();
+		var id = $('#txtusername').val();
+		var pass = $('#txtpassword').val();
+
+		var login_creds = id+"|"+pass;
+
+		if (id == '' || pass == '') {
+			$("#display").html('All fields required');
+			$("#display").css('color', 'red');
+			$("#display").fadeOut(8000);
+		} else {
+
+			
+			$.ajax({
+		        url : 'http://api.nalosolutions.com/zoom/mobileapi/checkonline.php',
+		        type : 'POST',
+		        data: { 
+		            username : id,
+					pass : pass
+		        },
+		        success : function(response,status,xhr) {
+		            if (response) {
+						$("#display").hide();
+						$.post("http://api.nalosolutions.com/zoom/mobileapi/loginval.php", {
+							username : id,
+							pass : pass
+						}, function(data) {
+							if (data[0] == 1) {
+								$("#display").hide();
+								var collector_id = data.substring(1);
+								var creds = id+'|'+pass+'|'+collector_id;
+								localStorage.setItem("creds", creds);
+
+								///fetch client list
+								$.post("http://api.nalosolutions.com/zoom/mobileapi/getClients.php", {
+									collector_id : collector_id,
+								}, function(data) {
+									if (data > 0) {
+										// console.log(data);
+										$("#display").html('Importing your clients...');
+										localStorage.setItem("clnts", data);
+										window.location = 'main.html';
+									} else {
+										$("#display").html('Client data import failed');
+										$("#display").css('color', 'red');
+										$("#display").fadeIn();
+										$("#display").fadeOut(8000);
+									};
+								});
+
+								///fetch list of services for dropdown
+								var valz = creds.split("|");
+								var ho_id = valz[3];
+								$.post("http://api.nalosolutions.com/zoom/mobileapi/getServices.php", {
+									ho_id : ho_id,
+								}, function(data) {
+									if (data) {
+										// console.log(data);
+										$("#display").html('Importing your services...');
+										localStorage.setItem("services", data);
+										window.location = 'main.html';
+									} else {
+										$("#display").html('Service data import failed');
+										$("#display").css('color', 'red');
+										$("#display").fadeIn();
+										$("#display").fadeOut(8000);
+									};
+								});
+								
+							} else {
+								$("#display").html('Invalid credentials');
+								$("#display").css('color', 'red');
+								$("#display").fadeIn();
+								$("#display").fadeOut(8000);
+							};
+						});
+						
+					}
+					else {
+					// alert(data);
+					$("#display").html('Invalid credentials');
+					$("#display").css('color', 'red');
+					$("#display").fadeIn();
+					$("#display").fadeOut(8000);
+					
+					};
+		        },
+		        error : function(){
+		        	
+		        	var stored_creds = localStorage.getItem("creds");
+
+					var res = stored_creds.split("|");
+					
+		        	var stored_login_creds = res[0]+"|"+res[1];
+
+
+
+		        	if(login_creds == stored_login_creds){
+		        		alert('Offline Mode activated. Payments will be stored temporarily');
+		        		window.location = 'main.html';
+		        	}
+		        	else {
+					// alert(data);
+						$("#display").html('Invalid credentials');
+						$("#display").css('color', 'red');
+						$("#display").fadeIn();
+						$("#display").fadeOut(8000);
+					
+					};
+		            
+		        }
+
+
+		    });
+
+			// $.post("http://wseed.nalosolutions.com/mobileapi/checkonline.php", {
+			// 	username : id,
+			// 	pass : pass
+			// }, function(data) {
+			// 	if (data == '1') {
+			// 		$("#display").hide();
+			// 		window.location = 'main.php';
+			// 	} else {
+			// 		$("#display").html('Invalid redentials');
+			// 		$("#display").css('color', 'red');
+			// 		$("#display").fadeIn();
+			// 		$("#display").fadeOut(8000);
+
+			// 	};
+			// });
+		}
+	}
+</script>
