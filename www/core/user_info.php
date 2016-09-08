@@ -1,0 +1,3 @@
+<div class='pull-right' style='margin-right:35px;'>
+<a class="inverse" style="text-decoration: none;"><strong>Balance:</strong> <?php echo $curr; ?> <?php echo $bal; ?></a> <strong>|</strong> <a style="text-decoration:none;" <?php if(isset($red)){ echo $red; } ?> ><i class='glyphicon glyphicon-envelope'></i> <?php echo $rem_sms; ?> SMSes left</a> <strong>|</strong> <a class="inverse" href="userprofile.php" style="text-decoration:none;"><i class='glyphicon glyphicon-user'></i> <?php echo $user_sess; ?></a> <strong>|</strong> <a type="button" href="logout.php" style="text-decoration: none;"><i class="glyphicon glyphicon-off"></i> logout</a>
+</div>
