@@ -1,4 +1,4 @@
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.cplus.nalo" versionCode = "23" version="1.0.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.cplus.nalo" versionCode = "24" version="1.0.0">
   <name>Collector+ Mobile</name>
   <description>Simple application for revenue collection</description>
   <author href="http://nalosolutions.com" email="noc@nalosolutions.com">NALO Solutions Limited</author>
